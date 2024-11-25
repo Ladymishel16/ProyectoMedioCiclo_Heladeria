@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heladeria Saboria</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{url_for('static',filename='style.css')}}">
+</head>
+<body>
+ <!--Menu-->
+    <nav class="navbar navbar-expand-md bg-body-tertiary">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="/"> <img src="/static/ice-cream-2.svg" alt="">Saboria</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">           
+              <li class="nav-item ">
+                <a class="nav-link active" href="productos_cliente" aria-current="page">Productos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/">Login</a>
+              </li>
+            </ul>
+            <form class="d-flex" role="search">
+              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+  
+
+  <!--Carrusel-->
+  <div id="carouselExampleIndicators" class="carousel slide">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active" style="max-height: 700px;">
+        <img src="{{url_for('static', filename='Img1.jpg ')}}" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item" style="max-height: 700px;">
+        <img src="{{url_for('static', filename='Img2.jpg ')}}" class="d-block w-100" alt="...">
+      </div>
+      <div class="carousel-item" style="max-height: 700px;">
+        <img src="{{url_for('static', filename='Img3.jpg ')}}" class="d-block w-100" alt="...">
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>    
+<!--Tarjetas-->
+    <div class="container mt-5 d-none d-md-block">
+        <div class ="row justify-content-center h-100">
+            <div class ="col-md-4">
+                <div class="card border-1 text-center h-100">
+                    <img src="/static/Prom.jpg" class="card-img-top rounded-bottom-1" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Milk Shake</h5>
+                      <p class="card-text">Un buena milkshake se califica por su textura espesa, balance de dulce e increíble sabor,conoce muchos mas sabores solo da clic.</p>
+                      <a href="productos_cliente" class="btn btn-primary">!Lo Quiero!</a>
+                    </div>
+                  </div>
+
+
+            </div>
+            <div class ="col-md-4">
+                <div class="card border-1 text-center h-100">
+                    <img src="/static/Prom1.jpg" class="card-img-top rounded-bottom-1" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Helados Artesanales</h5>
+                      <p class="card-text"> Se caracterizan por ser de alta calidad y utilizar materias primas frescas, evitando saborizantes, colorantes y conservantes.</p>
+                      <a href="productos_cliente" class="btn btn-primary">!Lo Quiero!</a>
+                    </div>
+                  </div>
+
+
+            </div>
+            <div class ="col-md-4">
+                <div class="card border-1 text-center h-100">
+                    <img src="/static/Prom2.jpg" class="card-img-top rounded-bottom-1" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title">Paletas Citricas</h5>
+                      <p class="card-text">Estado sólido: grasas, cristales de hielo, proteínas, fibras y estabilizantes, se incorporan al helado durante el proceso de congelación.</p>
+                      <a href="productos_cliente" class="btn btn-primary">!Lo Quiero!</a>
+                    </div>
+                  </div>
+
+
+            </div>
+        </div>
+     </div>
+     <!--Tarjetas Horizontales-->
+     <div class="container mt-5">
+     <div class="card mb-3 border-0">
+        <div class="row g-0">
+          <div class="col-md-5">
+            <img src="/static/H1.jpg" class="img-fluid rounded-start" alt="...">
+          </div>
+          <div class="col-md-7">
+            <div class="card-body">
+              <h2 class="card-title">Helado de Yogurth 0% Grasa</h2>
+              <p class="card-text">Elaborado con puro yogurt descremado, para mantener sus propiedades libre de grasas y textura inigualable.
+                Bajo en lactosa; rico en calcio y proteinas.  
+                Libre de emulsionantes, saborizantes, colorantes y conservantes.</p>
+              <a href="productos_cliente" class="btn btn-success btn-lg">!Lo Quiero!</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container mt-5">
+        <div class="card mb-3 border-0">
+           <div class="row g-0">
+             
+             <div class="col-md-7">
+               <div class="card-body">
+                 <h2 class="card-title">Paletas Artesanales 100% Frutales</h2>
+                 <p class="card-text">Elaborado con pura fruta fresca de diversas partes del país. Preferimos que nuestros insumos sean de pequeños productores locales, para lograr un impacto positivo en las diferentes comunidades. 
+                    Libre de emulsionantes, saborizantes, colorantes y conservantes.</p>
+                    <a href="productos_cliente" class="btn btn-success btn-lg">!Lo Quiero!</a>
+               </div>
+             </div>
+             <div class="col-md-5">
+                <img src="/static/H2.jpg" class="img-fluid rounded-start" alt="...">
+              </div>
+           </div>
+         </div>
+       </div>
+       <div class="container mt-5 ">
+        <div class="card mb-3 border-0">
+           <div class="row g-0">
+             <div class="col-md-5">
+               <img src="/static/H3.jpg" class="img-fluid rounded-start" alt="...">
+             </div>
+             <div class="col-md-7">
+               <div class="card-body">
+                 <h2 class="card-title">Paletas Artesanles Leche Vegana</h2>
+                 <p class="card-text">Elaborado con pura leche de origen vegetal. Tenemos bases de Leche de Coco, Leche de Almendra y Leche de Avena. Ligero para tu organismo y rico al paladar.
+                    Libre de lactosa; ideal para veganos, alergias alimentarias y APLV.  
+                    Libre de emulsionantes, saborizantes, colorantes y conservantes.</p>
+                 
+                 <a href="productos_cliente" class="btn btn-success btn-lg">!Lo Quiero!</a>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+</body>
+</html>

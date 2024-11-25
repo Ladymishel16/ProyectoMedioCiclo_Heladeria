@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestión de Pedidos</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="d-flex justify-content-center mt-4 mb-5">
+        <a href="/menu" class="btn btn-primary">Menu</a>
+    </div>
+<div class="container mt-4">
+    <h2>Gestión de Pedidos</h2>
+
+    <!-- Mensaje flash para acciones -->
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert alert-info">{{ messages[0] }}</div>
+      {% endif %}
+    {% endwith %}
+
+    <!-- Formulario para agregar pedido -->
+    <form action="{{ url_for('add_Pedidos') }}" method="POST" class="form-inline my-2">
+        <input type="datetime-local" name="fecha_pedido" class="form-control mr-2" placeholder="Fecha de Pedido" required>
+        <input type="number" name="customer_id" class="form-control mr-2" placeholder="ID del Cliente" required>
+        <input type="text" name="precio_total" class="form-control mr-2" placeholder="Precio Total" required>
+        <button type="submit" class="btn btn-primary">Agregar Pedido</button>
+    </form>
+
+    <!-- Tabla de Pedidos -->
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>ID Pedido</th>
+                <th>Fecha</th>
+                <th>ID Cliente</th>
+                <th>Precio Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido[0] }}</td>
+                <td>{{ pedido[1] }}</td>
+                <td>{{ pedido[2] }}</td>
+                <td>{{ pedido[3] }}</td>
+                <td>
+                    <a href="{{ url_for('edit_Pedido', id=pedido[0]) }}" class="btn btn-warning btn-sm">Editar</a>
+                    <a href="{{ url_for('delete_Pedido', id=pedido[0]) }}" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
