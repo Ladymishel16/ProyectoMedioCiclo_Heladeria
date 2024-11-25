@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Producto</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container mt-4">
+    <h2>Editar Producto</h2>
+    <form action="{{ url_for('edit_Producto', id=producto[0]) }}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="producto_nombre">Nombre del Producto</label>
+            <input type="text" name="producto_nombre" class="form-control" value="{{ producto[1] }}" required>
+        </div>
+        <div class="form-group">
+            <label for="producto_precio">Precio</label>
+            <input type="number" step="0.01" name="producto_precio" class="form-control" value="{{ producto[4] }}" required>
+        </div>
+        <div class="form-group">
+            <label for="producto_descripcion">Descripción</label>
+            <input type="text" name="producto_descripcion" class="form-control" value="{{ producto[5] }}">
+        </div>
+        <div class="form-group">
+            <label for="category_id">Categoría</label>
+            <select name="category_id" class="form-control" required>
+                <option value="">Seleccione una Categoría</option>
+                {% for categoria in categorias %}
+                <option value="{{ categoria[0] }}" {% if categoria[0] == categoria_actual %}selected{% endif %}>
+                    {{ categoria[1] }}
+                </option>
+            {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="producto_imagen">Imagen (opcional)</label>
+            <input type="file" name="producto_imagen" class="form-control" accept="image/*">
+            {% if producto[3] %}
+                <img src="data:image/jpeg;base64,{{ producto[3] }}" alt="Imagen del producto" width="100">
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-success">Actualizar Producto</button>
+        <a href="{{ url_for('productos') }}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>

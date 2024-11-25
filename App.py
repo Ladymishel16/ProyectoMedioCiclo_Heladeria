@@ -130,6 +130,132 @@ def delete_Pedido(id):
     return redirect(url_for('pedidos'))
 #----------------------------------------------
 
+# ----------- CRUD para Productos -----------
+# Mostrar todos los productos
+
+@app.route('/productos')
+def productos():
+    cur = mysql.connection.cursor()
+    
+    # Consulta ajustada para incluir el nombre de la categoría
+    cur.execute('''
+        SELECT 
+            Productos.id, 
+            Productos.nombre, 
+            Productos.precio, 
+            Productos.imagen, 
+            Productos.descripcion, 
+            Categorias.categoria_nombre 
+        FROM 
+            Productos
+        LEFT JOIN 
+            Categorias 
+        ON 
+            Productos.categoria = Categorias.category_id
+    ''')
+    
+    productos = cur.fetchall()
+    cur1 = mysql.connection.cursor()
+    cur1.execute('SELECT category_id, categoria_nombre FROM Categorias')
+    categorias = cur1.fetchall()
+    # Procesar los productos para convertir la imagen a Base64 y organizar los datos
+    productos_con_imagen = []
+    for producto in productos:
+        productos_con_imagen.append({
+            'id': producto[0],  # id del producto
+            'nombre': producto[1],  # nombre del producto
+            'precio': producto[2],  # precio
+            'imagen': base64.b64encode(producto[3]).decode('utf-8') if producto[3] else None,  # imagen en Base64
+            'descripcion': producto[4],  # descripción
+            'categoria_nombre': producto[5]  # nombre de la categoría
+        })
+
+    # Pasar los datos al template
+    return render_template('add_Productos.html', productos=productos_con_imagen,categorias=categorias)
+
+
+# Agregar un nuevo producto
+@app.route('/add_Productos', methods=['POST'])
+def add_Productos():
+    # Si el método es POST, procesamos el formulario
+    if request.method == 'POST':
+        # Recoger datos del formulario
+        producto_nombre = request.form['producto_nombre']
+        producto_precio = request.form['producto_precio']
+        producto_descripcion = request.form['producto_descripcion']
+        category_id = request.form['category_id']  # Recoger el ID de la categoría seleccionada
+        
+        # Manejar la imagen (si existe)
+        producto_imagen = None
+        if 'producto_imagen' in request.files:
+            file = request.files['producto_imagen']
+            if file and file.filename != '':
+                producto_imagen = file.read()  # Leer el archivo como binario
+        
+        # Insertar datos en la base de datos
+        try:
+            cur = mysql.connection.cursor()
+            cur.execute(
+                'INSERT INTO Productos (nombre, precio, descripcion, categoria, imagen) VALUES (%s, %s, %s, %s, %s)',
+                (producto_nombre, producto_precio, producto_descripcion, category_id, producto_imagen)
+            )
+            mysql.connection.commit()
+            flash('Producto agregado correctamente')
+        except Exception as e:
+            mysql.connection.rollback()
+            flash(f'Error al agregar producto: {str(e)}')
+
+        return redirect(url_for('productos'))
+
+    
+    
+
+@app.route('/edit_Producto/<int:id>', methods=['POST', 'GET'])
+def edit_Producto(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM Productos WHERE id = %s', [id])
+    producto = cur.fetchone()
+    cur1 = mysql.connection.cursor()
+    cur1.execute('SELECT category_id, categoria_nombre FROM Categorias')
+    categorias = cur1.fetchall()
+    categoria_actual = producto[6]  # Asegúrate de que esto sea el índice correcto
+
+    if request.method == 'POST':
+        producto_nombre = request.form['producto_nombre']
+        producto_precio = request.form['producto_precio']
+        producto_descripcion = request.form['producto_descripcion']
+        category_id = request.form['category_id']
+        
+        # Manejo de la imagen
+        producto_imagen = None
+        if 'producto_imagen' in request.files:
+            file = request.files['producto_imagen']
+            if file and file.filename != '':
+                producto_imagen = file.read()
+
+        # Actualización del producto
+        cur.execute("""
+            UPDATE Productos
+            SET nombre = %s, precio = %s, descripcion = %s, categoria = %s, imagen = %s
+            WHERE id = %s
+        """, (producto_nombre, producto_precio, producto_descripcion, category_id, producto_imagen, id))
+        
+        mysql.connection.commit()
+        flash('Producto actualizado correctamente')
+        return redirect(url_for('productos'))
+
+    return render_template('edit_Productos.html', producto=producto, categorias=categorias, categoria_actual=categoria_actual)
+
+
+# Eliminar producto
+@app.route('/delete_Producto/<int:id>', methods=['GET'])
+def delete_Producto(id):
+    cur = mysql.connection.cursor()
+    cur.execute('DELETE FROM Productos WHERE id = %s', [id])
+    mysql.connection.commit()
+    flash('Producto eliminado correctamente')
+    return redirect(url_for('productos'))
+#----------------------------------------------
 
 
 
