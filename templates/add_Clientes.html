@@ -1,0 +1,42 @@
+{% include("cabecera.html") %}
+
+<div class="caja">
+    <form class="form-control" action="crear-registro" method="post">
+
+        <h1 class="text-center t">Registro</h1>
+        {% if mensaje %}
+        <div class="alert alert-danger" role="alert">
+            {{ mensaje}}
+          </div>
+          {% endif %}
+  <div class="form-group ">
+    <label for="exampleInputEmail1 " class="t text-center">Nombre</label>
+    <input type="nombre" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese su Nombre " name="txtNombre">
+    </div> <br>
+  <div class="form-group ">
+    <label for="exampleInputEmail1 " class="t text-center">Correo</label>
+    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese su Correo " name="txtCorreo">
+    <small id="emailHelp" class="form-text text-muted"></small>
+  </div> <br>
+  <div class="form-group ">
+    <label for="exampleInputEmail1 " class="t text-center">Telefono</label>
+    <input type="telefono" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese su Telefono " name="txtTelefono">
+    </div> <br>
+  <div class="form-group">
+    <label for="exampleInputPassword1 " class="t text-center">Contraseña</label>
+    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Ingrese su Contraseña" name="txtContraseña">
+  </div>
+  <div class="form-group ">
+    <label for="exampleInputEmail1 " class="t text-center">Direccion</label>
+    <input type="direccion" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese su Direccion " name="txtDireccion">
+    </div> <br>
+  <div class="form-check">
+
+  </div>
+  <div class="text-center">
+  <button type="submit" class="btn btn-success">Registrar</button>
+</div>
+ 
+</form>
+
+
