@@ -270,7 +270,7 @@ def crear_registro():
     direccion = request.form['txtDireccion']
     contraseña = request.form['txtContraseña']
     cur = mysql.connection.cursor()
-    cur.execute('INSERT INTO Clientes (nombre, correo, telefono, direccion, contraseña, id_rol) VALUES (%s, %s, %s, %s, %s, "2")', (nombre, correo, telefono, direccion, contraseña))
+    cur.execute('INSERT INTO Clientes   (nombre, correo, telefono, direccion, contraseña, id_rol) VALUES (%s, %s, %s, %s, %s, "2")', (nombre, correo, telefono, direccion, contraseña))
     mysql.connection.commit()
     flash('Cliente agregado correctamente')
     return redirect(url_for('Index'))
@@ -299,6 +299,7 @@ def acceso_login():
                 return render_template('principal.html')
         else:
             return render_template('index.html',mensaje="Usuario O Contraseña Incorrectas")
+    return redirect(url_for('Index'))
 
 @app.route('/clientes')
 def list_Clientes():
@@ -337,6 +338,81 @@ def delete_Cliente(id):
     flash('Cliente eliminado correctamente')
     return redirect(url_for('list_Clientes'))
 #----------------------------------------------
+
+@app.route('/productos_cliente')
+def productos_cliente():
+    cur = mysql.connection.cursor()
+    
+    # Consulta para obtener los productos, incluyendo su imagen (en formato base64 si es necesario)
+    cur.execute('''
+        SELECT 
+            Productos.id, 
+            Productos.nombre, 
+            Productos.precio, 
+            Productos.imagen, 
+            Productos.descripcion, 
+            Categorias.categoria_nombre 
+        FROM 
+            Productos
+        LEFT JOIN 
+            Categorias 
+        ON 
+            Productos.categoria = Categorias.category_id
+    ''')
+    
+    productos = cur.fetchall()
+
+    # Procesar los productos para convertir la imagen a Base64 si es necesario
+    productos_con_imagen = []
+    for producto in productos:
+        productos_con_imagen.append({
+            'id': producto[0],
+            'nombre': producto[1],
+            'precio': producto[2],
+            'imagen': base64.b64encode(producto[3]).decode('utf-8') if producto[3] else None,
+            'descripcion': producto[4],
+            'categoria_nombre': producto[5]
+        })
+
+    # Pasar los productos al template
+    return render_template('productos_cliente.html', productos=productos_con_imagen)
+
+
+
+
+@app.route('/producto_detalle/<int:id>')
+def producto_detalle(id):
+    cur = mysql.connection.cursor()
+    cur.execute('''
+        SELECT 
+            Productos.id, 
+            Productos.nombre, 
+            Productos.precio, 
+            Productos.imagen, 
+            Productos.descripcion, 
+            Categorias.categoria_nombre 
+        FROM 
+            Productos
+        LEFT JOIN 
+            Categorias 
+        ON 
+            Productos.categoria = Categorias.category_id
+        WHERE Productos.id = %s
+    ''', [id])
+    
+    producto = cur.fetchone()
+    if producto:
+        producto_detalle = {
+            'id': producto[0],
+            'nombre': producto[1],
+            'precio': producto[2],
+            'imagen': base64.b64encode(producto[3]).decode('utf-8') if producto[3] else None,
+            'descripcion': producto[4],
+            'categoria_nombre': producto[5]
+        }
+        return render_template('producto_detalle.html', producto=producto_detalle)
+    return redirect(url_for('productos_cliente'))  # Redirigir si no se encuentra el producto
+
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
