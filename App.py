@@ -257,14 +257,86 @@ def delete_Producto(id):
     return redirect(url_for('productos'))
 #----------------------------------------------
 
+# ------------ FUNCIONES CON CLIENTE -----------
+@app.route('/add_Clientes')
+def registro():
+    return render_template('add_Clientes.html')  
 
+@app.route('/crear-registro', methods=['GET','POST'])
+def crear_registro():
+    nombre = request.form['txtNombre']
+    correo = request.form['txtCorreo']
+    telefono = request.form['txtTelefono']
+    direccion = request.form['txtDireccion']
+    contraseña = request.form['txtContraseña']
+    cur = mysql.connection.cursor()
+    cur.execute('INSERT INTO Clientes (nombre, correo, telefono, direccion, contraseña, id_rol) VALUES (%s, %s, %s, %s, %s, "2")', (nombre, correo, telefono, direccion, contraseña))
+    mysql.connection.commit()
+    flash('Cliente agregado correctamente')
+    return redirect(url_for('Index'))
 
+# ACCESO---LOGIN
+@app.route('/acceso-login', methods= ['GET', 'POST'])
+def acceso_login():
+   
+    if request.method == 'POST' and 'txtCorreo' in request.form and 'txtContraseña' in request.form:
+       
+        _correo = request.form['txtCorreo']
+        _password = request.form['txtContraseña']
 
+        cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cur.execute('SELECT * FROM clientes WHERE correo = %s AND contraseña = %s', (_correo, _password,))
+        account = cur.fetchone()
+      
+        if account:
+            session['logueado'] = True
+            session['id'] = account['customer_id']
+            session['id_rol']=account['id_rol']
+            
+            if session['id_rol']==1:
+                return render_template('menu.html')
+            elif session ['id_rol']==2:
+                return render_template('principal.html')
+        else:
+            return render_template('index.html',mensaje="Usuario O Contraseña Incorrectas")
 
+@app.route('/clientes')
+def list_Clientes():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM Clientes')
+    clientes = cur.fetchall()
+    return render_template('list_Clientes.html', clientes=clientes)
 
+# Actualizar cliente
+@app.route('/edit_Cliente/<int:id>', methods=['POST', 'GET'])
+def edit_Cliente(id):
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM Clientes WHERE customer_id = %s', [id])
+    cliente = cur.fetchone()
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        correo = request.form['correo']
+        telefono = request.form['telefono']
+        direccion = request.form['direccion']
+        cur.execute("""
+            UPDATE Clientes
+            SET nombre = %s, correo = %s, telefono = %s, direccion = %s
+            WHERE customer_id = %s
+        """, (nombre, correo, telefono, direccion, id))
+        mysql.connection.commit()
+        flash('Cliente actualizado correctamente')
+        return redirect(url_for('list_Clientes'))
+    return render_template('edit_Cliente.html', cliente=cliente)
 
-
-
+# Eliminar cliente
+@app.route('/delete_Cliente/<int:id>', methods=['GET'])
+def delete_Cliente(id):
+    cur = mysql.connection.cursor()
+    cur.execute('DELETE FROM Clientes WHERE customer_id = %s', [id])
+    mysql.connection.commit()
+    flash('Cliente eliminado correctamente')
+    return redirect(url_for('list_Clientes'))
+#----------------------------------------------
 
 if __name__ == '__main__':
     app.run(port=5000, debug=True)
