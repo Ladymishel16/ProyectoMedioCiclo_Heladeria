@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Menú Principal de Gestión</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Menú de Gestión</h2>
+    <p class="text-center">Seleccione una opción para gestionar:</p>
+
+    <div class="d-flex justify-content-center">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <a href="{{ url_for('list_Clientes') }}" class="btn btn-primary btn-lg btn-block">Gestión de Clientes</a>
+            </div>
+            <div class="col-md-6 mb-4">
+                <a href="{{ url_for('productos') }}" class="btn btn-secondary btn-lg btn-block">Gestión de Productos</a>
+            </div>
+            <div class="col-md-6 mb-4">
+                <a href="{{ url_for('categorias') }}" class="btn btn-success btn-lg btn-block">Gestión de Categorías</a>
+            </div>
+            <div class="col-md-6 mb-4">
+                <a href="{{ url_for('pedidos') }}" class="btn btn-warning btn-lg btn-block">Gestión de Pedidos</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
